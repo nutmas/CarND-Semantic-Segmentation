@@ -76,14 +76,20 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
     # TODO: Implement function
 
     # 1 x 1 convolution of layer 7
-    conv_1x1 = tf.layers.conv2d(vgg_layer7_out, num_classes, 1, padding='same', kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
+    layer7_conv_1x1 = tf.layers.conv2d(vgg_layer7_out, num_classes, 1, padding='same', kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
 
-    # deconvolution
-    output = tf.layers.conv2d_transpose(conv_1x1, num_classes, 4, 2, padding='same',kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
+    # deconvolution/upsample
+    layer7_upsample = tf.layers.conv2d_transpose(layer7_conv_1x1, num_classes, 4, 2, padding='same',kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
+
+    # 1 x 1 convolution of layer 4
+    layer4_conv_1x1 = tf.layers.conv2d(vgg_layer4_out, num_classes, 1, padding='same',
+                                       kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
+
+    # layer4_skip =
 
     # upsampling skip layers then add 2 > 2 > 8
 
-    tf.Print(output, [tf.shape(output)[1:3]])
+    tf.Print(layer7_upsample, [tf.shape(layer7_upsample)[1:3]])
 
     return None
 tests.test_layers(layers)
@@ -106,9 +112,8 @@ def optimize(nn_last_layer, correct_label, learning_rate, num_classes):
     # TODO: Implement function
 
     # get logits from flattened image
-    logits = tf.reshape(input(-1, num_classes))
-
-
+    logits = tf.reshape(nn_last_layer(-1, num_classes))
+    labels = tf.reshape(correct_label, [-1, num_classes])
 
     # after entropy - use atom optimiaser
 
