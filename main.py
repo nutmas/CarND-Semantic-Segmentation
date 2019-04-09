@@ -23,11 +23,11 @@ else:
 
 # hyperparameters
 # some different initialisers
-#Kernel_Initializer_stddev = 1e-3
-#KERN_INIT = tf.random_normal_initializer(stddev=Kernel_Initializer_stddev)
+Kernel_Initializer_stddev = 1e-3
+KERN_INIT = tf.random_normal_initializer(stddev=Kernel_Initializer_stddev)
 
-Kernel_Initializer_gain = 1e-3
-KERN_INIT =tf.orthogonal_initializer(gain=Kernel_Initializer_gain)
+#Kernel_Initializer_gain = 1e-3
+#KERN_INIT =tf.orthogonal_initializer(gain=Kernel_Initializer_gain)
 
 # regulizer to prevent overfitting
 Kernel_L2_regularizer = 1e-4 # must be float - small values of L2 can help prevent overfitting of training data
@@ -163,7 +163,7 @@ def optimize(nn_last_layer, correct_label, learning_rate, num_classes):
 
     cross_entropy_loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=labels))
 
-    # after cross entropy - use atom optimiser
+    # after cross entropy - use adam optimiser
     train_op = tf.train.AdamOptimizer(learning_rate).minimize(cross_entropy_loss)
 
 
