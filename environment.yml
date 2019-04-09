@@ -12,7 +12,11 @@ dependencies:
     - imageio
     - cudatoolkit==8.0
     - cudnn==6.0
+    - opencv3
+    - plotly
+    - numba
     - pip:
         - protobuf==3.4.0
         - moviepy
         - tensorflow-gpu==1.4
+        - tensorflow-tensorboard==0.4.0
